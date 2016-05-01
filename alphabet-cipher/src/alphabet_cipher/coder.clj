@@ -50,10 +50,21 @@
         message-indices (string-to-indices message)]
     (encode-from-chart substitution-chart keyword-indices message-indices)))
 
+(defn get-row-of-char-at-column
+  [chart column-index letter]
+  (let [row (first (filter (fn [row]
+                             (= (nth row column-index) letter))
+                           chart))
+        letter-of-row (first row)]
+    letter-of-row))
+
 (defn decode [keyword message]
   (let [substitution-chart (generate-substitution-chart)
-        extended-keyword (extend-characters-by-n (count message))
-        keyword-indices (string-to-indices extended-keyword)]))
+        extended-keyword (extend-characters-by-n keyword (count message))
+        keyword-indices (string-to-indices extended-keyword)]
+    (apply str (map (partial get-row-of-char-at-column substitution-chart)
+                    keyword-indices
+                    message))))
 
 (defn decipher [cipher message]
   "decypherme")
