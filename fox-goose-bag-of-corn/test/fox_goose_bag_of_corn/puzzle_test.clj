@@ -42,4 +42,3 @@
         (reduce validate-move left-moves)
         (reduce validate-move middle-moves)
         (reduce validate-move right-moves )))))
-
