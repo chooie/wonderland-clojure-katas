@@ -7,22 +7,52 @@
                (slurp)
                (read-string)))
 
-(defn doublets [word1 word2]
-  (let [target-word word2]
-    (loop [cur-word word1
-           sequence [cur-word]]
-      (if (= cur-word target-word)
-        sequence
-        (let [words-one-different-to-current-word
-              (get-one-letter-different-words cur-word words)]
-          (println words-one-different-to-current-word)
-          (if (empty? words-one-different-to-current-word)
-            sequence ;; (throw (Exception. "Not doublets"))
-            ;; TODO: handle multiple cases
-            (let [words-not-in-sequence (first (filterv #((complement word-in-array?)
-                                                          % sequence)
-                                                        words-one-different-to-current-word))]
-              (recur words-not-in-sequence (conj sequence words-not-in-sequence)))))))))
+(defn doublets
+  [start-word target-word]
+  (let [starting-solution-branch [start-word]]
+    (loop [possible-solution-branches [starting-solution-branch]]
+      (let [get-solution get-valid-solution-from-solution-branches
+            solution (get-solution target-word possible-solution-branches)]
+        (if solution
+          solution
+          (recur (advance-branches possible-solution-branches
+                                   words)))))))
+
+(defn flatten-once
+  [nested-seq]
+  (apply concat nested-seq))
+
+(defn advance-branches
+  [branches dictionary]
+  (flatten-once
+   (mapv (fn [branch]
+           (advance-possible-solution-branch branch dictionary))
+         branches)))
+
+(defn advance-possible-solution-branch
+  [solution-branch dictionary]
+  (let [cur-word (last solution-branch)
+        next-words (get-one-letter-different-words cur-word dictionary)
+        not-in-array? (complement word-in-array?)
+        word-not-occurred-before? (fn [word]
+                                    (not-in-array? word solution-branch))
+        next-words-not-occurred-before (filterv word-not-occurred-before?
+                                                next-words)
+        possible-solutions (mapv (fn [new-word]
+                                   (conj solution-branch new-word))
+                                 next-words-not-occurred-before)]
+    (if (empty? possible-solutions)
+      nil
+      possible-solutions)))
+
+(defn get-valid-solution-from-solution-branches
+  [target-word possible-solution-branches]
+  (first (filterv (partial valid-solution? target-word)
+                  possible-solution-branches)))
+
+(defn valid-solution?
+  [target-word possible-solution]
+  (= target-word (last possible-solution)))
 
 (defn get-one-letter-different-words
   [word dictionary]
