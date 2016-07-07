@@ -2,12 +2,21 @@
   (:require [magic-square.util :as util]
             [magic-square.vector-3-by-3 :as vec-3-3]))
 
-(declare permute-array
+(declare generate-3-by-3-permutations
+         permute-array
          permute-array-with-2-elems
          permute-array-with-more-than-2-elems
          make-permutations-with-elem
-         combine-elem-and-permutation
-         generate-3-by-3-permutations)
+         combine-elem-and-permutation)
+
+
+(defn generate-3-by-3-permutations
+  [values]
+  {:pre [(= 9 (count values))]}
+  (let [value-permutations   (permute-array values)
+        elems-to-3-by-3-vecs (mapv vec-3-3/generate-3-by-3-vector
+                                   value-permutations)]
+    elems-to-3-by-3-vecs))
 
 (defn permute-array
   [elems]
@@ -39,11 +48,3 @@
 (defn combine-elem-and-permutation
   [elem permutation]
   (vec (concat [elem] permutation)))
-
-(defn generate-3-by-3-permutations
-  [values]
-  {:pre [(= 9 (count values))]}
-  (let [value-permutations   (permute-array values)
-        elems-to-3-by-3-vecs (mapv vec-3-3/generate-3-by-3-vector
-                                   value-permutations)]
-    elems-to-3-by-3-vecs))
