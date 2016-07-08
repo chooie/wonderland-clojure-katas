@@ -37,27 +37,3 @@
 (defn all-values-are-equal?
   [arr]
   (= 1 (count (set arr))))
-
-(defn get-index-of-elem
-  [arr elem]
-  (.indexOf arr elem))
-
-(defn row-contains-elem?
-  [row elem]
-  (boolean (some #{elem} row)))
-
-(defn get-index-of-row-containing-elem
-  [maze elem]
-  (let [matching-row (first (filterv (fn [row]
-                                       (row-contains-elem? row elem))
-                                     maze))]
-    (get-index-of-elem maze matching-row)))
-
-(defn get-start-position
-  "N.b. assumes only one start-position"
-  [maze]
-  {:pre [(is-square-maze? maze)]}
-  (let [occurred-row-index    (get-index-of-row-containing-elem maze start-symbol)
-        occurred-row          (get maze occurred-row-index)
-        occurred-column-index (get-index-of-elem occurred-row start-symbol)]
-    {:row-index occurred-row-index :column-index occurred-column-index}))
