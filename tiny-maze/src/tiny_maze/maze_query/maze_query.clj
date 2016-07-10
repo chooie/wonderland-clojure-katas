@@ -36,3 +36,8 @@
   [maze]
   {:pre [(m-s/is-square-maze? maze)]}
   (get-position-of-elem-from-maze maze :E))
+
+(defn get-symbol-at-position
+  [maze {:keys [row-index column-index] :as position}]
+  {:pre [(m-s/is-square-maze? maze)]}
+  (get-in maze [row-index column-index]))
