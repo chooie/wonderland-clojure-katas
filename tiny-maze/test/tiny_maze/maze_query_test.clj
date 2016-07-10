@@ -37,6 +37,37 @@
                {:row-index 2 :column-index 1}}
              (get-positions-around-position correct-maze
                                             {:row-index 2 :column-index 2}))))
+    (testing "top row but not corners"
+      (is (= #{{:row-index 0 :column-index 0}
+               {:row-index 0 :column-index 2}
+               {:row-index 1 :column-index 1}}
+             (get-positions-around-position correct-maze
+                                            {:row-index 0 :column-index 1}))))
+    (testing "bottom row but not corners"
+      (is (= #{{:row-index 1 :column-index 1}
+               {:row-index 2 :column-index 0}
+               {:row-index 2 :column-index 2}}
+             (get-positions-around-position correct-maze
+                                            {:row-index 2 :column-index 1}))))
+    (testing "left column but not corners"
+      (is (= #{{:row-index 0 :column-index 0}
+               {:row-index 1 :column-index 1}
+               {:row-index 2 :column-index 0}}
+             (get-positions-around-position correct-maze
+                                            {:row-index 1 :column-index 0}))))
+    (testing "right column but not corners"
+      (is (= #{{:row-index 0 :column-index 2}
+               {:row-index 1 :column-index 1}
+               {:row-index 2 :column-index 2}}
+             (get-positions-around-position correct-maze
+                                            {:row-index 1 :column-index 2}))))
+    (testing "internal position"
+      (is (= #{{:row-index 0 :column-index 1}
+               {:row-index 2 :column-index 1}
+               {:row-index 1 :column-index 0}
+               {:row-index 1 :column-index 2}}
+             (get-positions-around-position correct-maze
+                                            {:row-index 1 :column-index 1}))))
     (testing "position not in maze"
       (is (thrown? Exception
                    (get-positions-around-position correct-maze
