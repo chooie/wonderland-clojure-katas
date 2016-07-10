@@ -1,6 +1,6 @@
 (ns tiny-maze.solver
   (:require [tiny-maze.maze-structure :as m-s]
-            [tiny-maze.maze-query :as m-q]))
+            [tiny-maze.maze-query.maze-query :as m-q]))
 
 (declare solve-maze)
 

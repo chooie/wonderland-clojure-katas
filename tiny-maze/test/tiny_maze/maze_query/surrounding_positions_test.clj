@@ -1,75 +1,63 @@
-(ns tiny-maze.maze-query-test
-  (:require  [clojure.test :refer :all]
-             [tiny-maze.maze-query :refer :all]))
+(ns tiny-maze.maze-query.surrounding-positions-test
+  (:require [clojure.test :refer :all]
+            [tiny-maze.maze-query.surrounding-positions :refer :all]
+            [tiny-maze.test-mazes :refer :all]))
 
-(def correct-maze [[:S 0  1]
-                   [1  0  1]
-                   [1  0 :E]])
-
-(def wrong-maze [[1 1 1]
-                 [1 1 1]
-                 [1 1 1]])
-
-(deftest querying-maze
-  (testing "getting position of element from maze"
-    (is (= {:row-index 0 :column-index 0}
-           (get-position-of-elem-from-maze correct-maze :S)))
-    (is (= {:row-index -1 :column-index -1}
-           (get-position-of-elem-from-maze wrong-maze :S))))
-  (testing "getting positions around positions"
-    (testing "top left corner"
+(deftest surrounding-positions
+  (testing "Getting positions around positions"
+    (testing "Top left corner"
       (is (= #{{:row-index 0 :column-index 1}
-              {:row-index 1 :column-index 0}}
+               {:row-index 1 :column-index 0}}
              (get-positions-around-position correct-maze
                                             {:row-index 0 :column-index 0}))))
-    (testing "top right corner"
+    (testing "Top right corner"
       (is (= #{{:row-index 0 :column-index 1}
                {:row-index 1 :column-index 2}}
              (get-positions-around-position correct-maze
                                             {:row-index 0 :column-index 2}))))
-    (testing "bottom left corner"
+    (testing "Bottom left corner"
       (is (= #{{:row-index 1 :column-index 0}
                {:row-index 2 :column-index 1}}
              (get-positions-around-position correct-maze
                                             {:row-index 2 :column-index 0}))))
-    (testing "bottom right corner"
+    (testing "Bottom right corner"
       (is (= #{{:row-index 1 :column-index 2}
                {:row-index 2 :column-index 1}}
              (get-positions-around-position correct-maze
                                             {:row-index 2 :column-index 2}))))
-    (testing "top row but not corners"
+    (testing "Top row but not corners"
       (is (= #{{:row-index 0 :column-index 0}
                {:row-index 0 :column-index 2}
                {:row-index 1 :column-index 1}}
              (get-positions-around-position correct-maze
                                             {:row-index 0 :column-index 1}))))
-    (testing "bottom row but not corners"
+    (testing "Bottom row but not corners"
       (is (= #{{:row-index 1 :column-index 1}
                {:row-index 2 :column-index 0}
                {:row-index 2 :column-index 2}}
              (get-positions-around-position correct-maze
                                             {:row-index 2 :column-index 1}))))
-    (testing "left column but not corners"
+    (testing "Left column but not corners"
       (is (= #{{:row-index 0 :column-index 0}
                {:row-index 1 :column-index 1}
                {:row-index 2 :column-index 0}}
              (get-positions-around-position correct-maze
                                             {:row-index 1 :column-index 0}))))
-    (testing "right column but not corners"
+    (testing "Right column but not corners"
       (is (= #{{:row-index 0 :column-index 2}
                {:row-index 1 :column-index 1}
                {:row-index 2 :column-index 2}}
              (get-positions-around-position correct-maze
                                             {:row-index 1 :column-index 2}))))
-    (testing "internal position"
+    (testing "Internal position"
       (is (= #{{:row-index 0 :column-index 1}
                {:row-index 2 :column-index 1}
                {:row-index 1 :column-index 0}
                {:row-index 1 :column-index 2}}
              (get-positions-around-position correct-maze
                                             {:row-index 1 :column-index 1}))))
-    (testing "position not in maze"
-      (is (thrown? Exception
-                   (get-positions-around-position correct-maze
-                                                  {:row-index 999
-                                                   :column-index 999}))))))
+    (testing "Position not in maze"
+    (is (thrown? Exception
+                 (get-positions-around-position correct-maze
+                                                {:row-index 999
+                                                 :column-index 999}))))))

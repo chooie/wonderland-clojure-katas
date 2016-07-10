@@ -1,43 +1,5 @@
-(ns tiny-maze.maze-query
+(ns tiny-maze.maze-query.surrounding-positions
   (:require [tiny-maze.maze-structure :as m-s]))
-
-(defn get-index-of-elem
-  [arr elem]
-  (if arr
-    (.indexOf arr elem)
-    -1))
-
-(defn row-contains-elem?
-  [row elem]
-  (boolean (some #{elem} row)))
-
-(defn get-index-of-row-containing-elem
-  "N.b. For now just gets the first one"
-  [maze elem]
-  (let [matching-row (first (filterv (fn [row]
-                                       (row-contains-elem? row elem))
-                                     maze))]
-    (get-index-of-elem maze matching-row)))
-
-(defn get-position-of-elem-from-maze
-  "N.b. assumes only one start-position"
-  [maze elem]
-  (let [occurred-row-index    (get-index-of-row-containing-elem maze elem)
-        occurred-row          (get maze occurred-row-index)
-        occurred-column-index (get-index-of-elem occurred-row elem)]
-    {:row-index occurred-row-index :column-index occurred-column-index}))
-
-(defn get-start-position
-  [maze]
-  {:pre [(m-s/is-square-maze? maze)]}
-  (get-position-of-elem-from-maze maze :S))
-
-(defn get-end-position
-  [maze]
-  {:pre [(m-s/is-square-maze? maze)]}
-  (get-position-of-elem-from-maze maze :E))
-
-;; Positions and Surrounding positions ;;
 
 ;; Rows and Columns
 
@@ -120,17 +82,17 @@
 (defn get-positions-around-top-row-position
   [maze {:keys [row-index column-index] :as position}]
   {:pre [is-top-row-and-not-corner? maze position]}
-  (let [column-to-left (dec column-index)
+  (let [column-to-left  (dec column-index)
         column-to-right (inc column-index)
-        row-below (inc row-index)]
+        row-below       (inc row-index)]
     #{{:row-index row-index :column-index column-to-left}
       {:row-index row-index :column-index column-to-right}
       {:row-index row-below :column-index column-index}}))
 
 (defn is-bottom-row-and-not-corner?
   [maze {:keys [row-index column-index] :as position}]
-  (let [number-of-rows (m-s/get-number-of-rows maze)
-        last-row-index (dec number-of-rows)
+  (let [number-of-rows    (m-s/get-number-of-rows maze)
+        last-row-index    (dec number-of-rows)
         number-of-columns (m-s/get-number-of-rows maze)
         last-column-index (m-s/get-number-of-columns-for-maze maze)]
     (and (= row-index last-row-index)
@@ -140,8 +102,8 @@
 (defn get-positions-around-bottom-row-position
   [maze {:keys [row-index column-index] :as position}]
   {:pre [is-bottom-row-and-not-corner? maze position]}
-  (let [row-above (dec row-index)
-        column-to-left (dec column-index)
+  (let [row-above       (dec row-index)
+        column-to-left  (dec column-index)
         column-to-right (inc column-index)]
     #{{:row-index row-index :column-index column-to-left}
       {:row-index row-index :column-index column-to-right}
@@ -158,8 +120,8 @@
 (defn get-positions-around-left-column-position
   [maze {:keys [row-index column-index] :as position}]
   {:pre [is-left-column-and-not-corner? maze position]}
-  (let [row-above (dec row-index)
-        row-below (inc row-index)
+  (let [row-above       (dec row-index)
+        row-below       (inc row-index)
         column-to-right (inc column-index)]
     #{{:row-index row-above :column-index column-index}
       {:row-index row-index :column-index column-to-right}
@@ -167,10 +129,10 @@
 
 (defn is-right-column-and-not-corner?
   [maze {:keys [row-index column-index] :as position}]
-  (let [number-of-rows (m-s/get-number-of-rows maze)
-        last-row-index (dec number-of-rows)
+  (let [number-of-rows    (m-s/get-number-of-rows maze)
+        last-row-index    (dec number-of-rows)
         number-of-columns (m-s/get-number-of-columns-for-maze maze)
-        last-column (dec number-of-columns)]
+        last-column       (dec number-of-columns)]
     (and (< 0 row-index)
          (< row-index last-row-index)
          (= last-column column-index))))
@@ -178,8 +140,8 @@
 (defn get-positions-around-right-column-position
   [maze {:keys [row-index column-index] :as position}]
   {:pre [is-right-column-and-not-corner? maze position]}
-  (let [row-above (dec row-index)
-        row-below (inc row-index)
+  (let [row-above      (dec row-index)
+        row-below      (inc row-index)
         column-to-left (dec column-index)]
     #{{:row-index row-above :column-index column-index}
       {:row-index row-below :column-index column-index}
@@ -187,8 +149,8 @@
 
 (defn is-internal-position?
   [maze {:keys [row-index column-index] :as position}]
-  (let [number-of-rows (m-s/get-number-of-rows maze)
-        last-row-index (dec number-of-rows)
+  (let [number-of-rows    (m-s/get-number-of-rows maze)
+        last-row-index    (dec number-of-rows)
         number-of-columns (m-s/get-number-of-columns-for-maze maze)
         last-column-index (dec number-of-columns)]
     (and (< 0 row-index)
@@ -199,9 +161,9 @@
 (defn get-positions-around-internal-position
   [maze {:keys [row-index column-index] :as position}]
   {:pre [is-internal-position? maze position]}
-  (let [row-above (dec row-index)
-        row-below (inc row-index)
-        column-to-left (dec column-index)
+  (let [row-above       (dec row-index)
+        row-below       (inc row-index)
+        column-to-left  (dec column-index)
         column-to-right (inc column-index)]
     #{{:row-index row-above :column-index column-index}
       {:row-index row-below :column-index column-index}
@@ -232,18 +194,18 @@
                      maze position)
     (is-bottom-row-and-not-corner?
      maze
-     position) (get-positions-around-bottom-row-position
-                maze position)
+     position)      (get-positions-around-bottom-row-position
+                     maze position)
     (is-left-column-and-not-corner?
      maze
-     position)(get-positions-around-left-column-position
-                maze position)
+     position)      (get-positions-around-left-column-position
+                     maze position)
     (is-right-column-and-not-corner?
      maze
-     position)(get-positions-around-right-column-position
-                maze position)
+     position)      (get-positions-around-right-column-position
+                     maze position)
     (is-internal-position?
      maze
-     position) (get-positions-around-internal-position
+     position)      (get-positions-around-internal-position
                      maze position)
     :default        (throw (Exception. "Not in maze"))))
