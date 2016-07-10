@@ -24,8 +24,16 @@
         position-and-symbol {:position position :symbol symbol}]
     position-and-symbol))
 
-#_(defn get-surrounding-positions-with-symbols-of-position
+(defn get-positions-with-symbols-for-positions
+  [maze positions]
+  (mapv (fn [position] (get-position-and-symbol-at-position maze
+                                                            position))
+          positions))
+
+(defn get-surrounding-positions-with-symbols-of-position
   [maze position]
   {:pre [(m-s/is-square-maze? maze)]}
-  (let [positions (s-p/get-positions-around-position maze position)]
-    (mapv (fn [position] (foo maze position)) positions)))
+  (let [positions (s-p/get-positions-around-position maze position)
+        positions-with-symbols (get-positions-with-symbols-for-positions
+                                maze positions)]
+    (set positions-with-symbols)))
