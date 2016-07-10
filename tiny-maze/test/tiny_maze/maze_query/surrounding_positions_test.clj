@@ -57,7 +57,7 @@
              (get-positions-around-position correct-maze
                                             {:row-index 1 :column-index 1}))))
     (testing "Position not in maze"
-    (is (thrown? Exception
-                 (get-positions-around-position correct-maze
-                                                {:row-index 999
-                                                 :column-index 999}))))))
+      (is (thrown? Exception
+                   (get-positions-around-position correct-maze
+                                                  {:row-index    999
+                                                   :column-index 999}))))))

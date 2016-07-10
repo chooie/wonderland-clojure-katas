@@ -9,5 +9,4 @@
   [maze]
   {:pre [(m-s/is-square-maze? maze)]}
   (let [start-position (m-q/get-start-position maze)
-        end-position (m-q/get-end-position maze)]
-    ))
+        end-position (m-q/get-end-position maze)]))
