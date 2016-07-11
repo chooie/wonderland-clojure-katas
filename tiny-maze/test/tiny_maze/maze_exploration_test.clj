@@ -19,7 +19,10 @@
                             :symbol   current-symbol}
                            {:position {:row-index 0 :column-index 1}
                             :symbol   space-symbol}))))
-  #_(testing "Advance maze"
+  (testing "Start maze traversal"
     (is (= next-maze
-           (advance-maze correct-maze)))))
+           (start-maze-traversal correct-maze))))
+  (testing "Checks maze has been started"
+    (is (false? (maze-has-been-started? correct-maze)))
+    (is (true? (maze-has-been-started? next-maze)))))
 

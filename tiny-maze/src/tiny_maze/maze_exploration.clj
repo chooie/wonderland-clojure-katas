@@ -1,6 +1,7 @@
 (ns tiny-maze.maze-exploration
   (:require [tiny-maze.maze-query.maze-query :as m-q]
-            [tiny-maze.constants :as c]))
+            [tiny-maze.constants :as c]
+            [tiny-maze.maze-structure :as m-s]))
 
 (def space-symbol     (:empty-space      c/symbols))
 (def travelled-symbol (:travelled-space  c/symbols))
@@ -33,9 +34,29 @@
     {:previous-position travelled-step
      :current-position  next-step}))
 
-(defn generate-next-maze
+#_(defn generate-next-maze
   [maze]
   )
 
-(defn advance-maze
+(defn maze-has-been-started?
+  [maze]
+  (let [start-position (m-q/get-start-position maze)
+        current-position (m-q/get-current-position maze)]
+    ))
+
+#_(defn advance-maze
   [maze])
+
+(defn start-maze-traversal
+  [maze]
+  (let [start-position (m-q/get-start-position maze)
+        {:keys [row-index column-index]} start-position
+        next-maze (assoc-in maze [row-index column-index] current-symbol)]
+    next-maze))
+
+#_(let [start-position (m-q/get-start-position maze)
+        possible-steps (get-next-possible-steps maze start-position)
+        taken-steps (mapv (fn [possible-step]
+                            (take-next-step start-position possible-step))
+                          possible-steps)]
+    taken-steps)

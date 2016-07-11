@@ -22,7 +22,7 @@
       (is (= {:row-index 2 :column-index 2}
            (get-end-position correct-maze))))
     (testing "Getting current position"
-      (is (= {:row-index 0 :column-index 1}
+      (is (= {:row-index 0 :column-index 0}
            (get-current-position next-maze)))))
   (testing "Getting symbol and position at position"
     (is (= {:position {:row-index 0 :column-index 0}

@@ -14,7 +14,7 @@
 
 (def start-maze correct-maze)
 
-(def next-maze [[t c w]
+(def next-maze [[c _ w]
                 [w _ w]
                 [w _ e]])
 
