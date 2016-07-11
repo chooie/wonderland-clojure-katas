@@ -51,9 +51,14 @@
     (and ((complement p/is-inside-bounds-of-maze?) maze end-position)
          (p/is-inside-bounds-of-maze? maze current-position))))
 
-#_(defn generate-next-maze
+(defn maze-has-been-solved?
   [maze]
- )
+  (let [start-position   (m-q/get-start-position maze)
+        end-position     (m-q/get-end-position maze)
+        current-position (m-q/get-current-position maze)]
+    (and ((complement p/is-inside-bounds-of-maze?) maze start-position)
+         ((complement p/is-inside-bounds-of-maze?) maze end-position)
+         ((complement p/is-inside-bounds-of-maze?) maze current-position))))
 
 (defn change-symbol-in-maze
   [maze position-with-symbol]
@@ -72,26 +77,28 @@
 
 (defn advance-maze
   [maze]
-  {:pre [(maze-has-been-started? maze)]}
+  ;; {:pre [(maze-has-been-started? maze)]}
   (let [current-position             (m-q/get-current-position maze)
         current-position-with-symbol (m-q/get-position-and-symbol-at-position
                                       maze current-position)]
-    (if (maze-has-been-finished? maze)
-      (let [end-position-with-symbol (assoc current-position-with-symbol
-                                            :symbol travelled-symbol)
-            finished-maze            (change-symbol-in-maze
-                                      maze
-                                      end-position-with-symbol)]
-        (set [finished-maze]))
-      (let [next-steps  (get-next-possible-steps maze current-position)
-            taken-steps (mapv (fn [next-step]
-                                (take-next-step current-position-with-symbol
-                                                next-step))
-                              next-steps)
-            new-mazes   (mapv (fn [taken-step]
-                                (update-maze-symbols maze taken-step))
-                              taken-steps)]
-        (set new-mazes)))))
+    (if (maze-has-been-solved? maze)
+      maze
+      (if (maze-has-been-finished? maze)
+        (let [end-position-with-symbol (assoc current-position-with-symbol
+                                              :symbol travelled-symbol)
+              finished-maze            (change-symbol-in-maze
+                                        maze
+                                        end-position-with-symbol)]
+          (set [finished-maze]))
+        (let [next-steps  (get-next-possible-steps maze current-position)
+              taken-steps (mapv (fn [next-step]
+                                  (take-next-step current-position-with-symbol
+                                                  next-step))
+                                next-steps)
+              new-mazes   (mapv (fn [taken-step]
+                                  (update-maze-symbols maze taken-step))
+                                taken-steps)]
+          (set new-mazes))))))
 
 (defn move-to-start-position
   [maze]

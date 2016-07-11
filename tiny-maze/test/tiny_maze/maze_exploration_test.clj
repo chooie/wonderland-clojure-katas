@@ -48,5 +48,7 @@
     (is (= #{one-from-solved-maze}
            (advance-maze two-from-solved-maze)))
     (is (= #{solved-maze}
-           (advance-maze one-from-solved-maze)))))
+           (advance-maze one-from-solved-maze)))
+    (is (= #{}
+           (advance-maze blocked-maze)))))
 
