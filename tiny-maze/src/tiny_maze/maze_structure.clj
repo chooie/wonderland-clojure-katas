@@ -1,8 +1,5 @@
 (ns tiny-maze.maze-structure)
 
-(def start-symbol :S)
-(def end-symbol :E)
-
 (declare is-square-maze?
          get-number-of-rows
          get-number-of-columns-for-maze

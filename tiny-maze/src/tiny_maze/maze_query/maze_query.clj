@@ -1,17 +1,29 @@
 (ns tiny-maze.maze-query.maze-query
   (:require [tiny-maze.maze-structure :as m-s]
             [tiny-maze.maze-query.position :as p]
-            [tiny-maze.maze-query.surrounding-positions :as s-p]))
+            [tiny-maze.maze-query.surrounding-positions :as s-p]
+            [tiny-maze.constants :as c]))
+
+(def start-symbol (:start-position c/symbols))
+(def end-symbol (:end-position c/symbols))
+(def empty-symbol (:empty-space c/symbols))
+(def wall-symbol (:blocking-wall c/symbols))
+(def current-symbol (:current-position c/symbols))
 
 (defn get-start-position
   [maze]
   {:pre [(m-s/is-square-maze? maze)]}
-  (p/get-position-of-elem-from-maze maze :S))
+  (p/get-position-of-elem-from-maze maze start-symbol))
 
 (defn get-end-position
   [maze]
   {:pre [(m-s/is-square-maze? maze)]}
-  (p/get-position-of-elem-from-maze maze :E))
+  (p/get-position-of-elem-from-maze maze end-symbol))
+
+(defn get-current-position
+  [maze]
+  {:pre [(m-s/is-square-maze? maze)]}
+  (p/get-position-of-elem-from-maze maze current-symbol))
 
 (defn get-symbol-at-position
   [maze {:keys [row-index column-index] :as position}]

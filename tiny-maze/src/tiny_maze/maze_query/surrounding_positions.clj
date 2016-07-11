@@ -1,8 +1,6 @@
 (ns tiny-maze.maze-query.surrounding-positions
   (:require [tiny-maze.maze-structure :as m-s]))
 
-;; Rows and Columns
-
 (defn is-first-row?
   [maze row-index]
   (= 0 row-index))
