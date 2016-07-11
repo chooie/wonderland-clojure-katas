@@ -5,10 +5,11 @@
 
 (deftest surrounding-positions
   (testing "Checks positions are within bounds of maze"
-    (is true? (is-inside-bounds-of-maze? correct-maze
-                                         {:row-index 0 :column-index 0}))
-    (is false? (is-inside-bounds-of-maze? correct-maze
-                                          {:row-index 999 :column-index 999})))
+    (is (true? (is-inside-bounds-of-maze? correct-maze
+                                          {:row-index 0 :column-index 0})))
+    (is (false? (is-inside-bounds-of-maze? correct-maze
+                                           {:row-index 999
+                                            :column-index 999}))))
   (testing "Getting positions around positions"
     (testing "Top left corner"
       (is (= #{{:row-index 0 :column-index 1}
