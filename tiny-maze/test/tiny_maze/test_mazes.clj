@@ -18,6 +18,23 @@
                 [w _ w]
                 [w _ e]])
 
+(def next-next-maze [[t c w]
+                     [w _ w]
+                     [w _ e]])
+
+(def two-from-solved-maze [[t t w]
+                           [w t w]
+                           [w c e]])
+
+(def one-from-solved-maze [[t t w]
+                           [w t w]
+                           [w t c]])
+
+(def solved-maze
+  [[t t w]
+   [w t w]
+   [w t t]])
+
 (def wrong-maze [[w w w]
                  [w w w]
                  [w w w]])
