@@ -30,4 +30,7 @@
            (solve-maze start-maze))))
   (testing "Can find way to exit with 4x4 maze"
     (is (= solved-maze-4-by-4
-           (solve-maze start-maze-4-by-4)))))
+           (solve-maze start-maze-4-by-4))))
+  (testing "Can find way to exit with looped maze"
+    (is (= solved-maze-lopped
+           (solve-maze start-maze-looped)))))

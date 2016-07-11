@@ -39,11 +39,17 @@
                                          solutions))]
     smallest-solution))
 
-(defn solve-maze
+(defn get-best-maze-solution-path
   [maze]
   {:pre [(m-s/is-square-maze? maze)]}
   (let [started-maze (m-e/move-to-start-position maze)
         solved-mazes (solve-maze-recursive #{[started-maze]})
-        shortest-solved-tree (get-shortest-solution solved-mazes)
+        shortest-solved-tree (get-shortest-solution solved-mazes)]
+    shortest-solved-tree))
+
+(defn solve-maze
+  [maze]
+  {:pre [(m-s/is-square-maze? maze)]}
+  (let [shortest-solved-tree (get-best-maze-solution-path maze)
         best-solved-maze (last shortest-solved-tree)]
     best-solved-maze))

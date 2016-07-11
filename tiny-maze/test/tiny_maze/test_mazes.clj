@@ -76,3 +76,17 @@
    [w w t _]
    [w _ t w]
    [w w t t]])
+
+(def start-maze-looped
+  [[s _ _ _ _]
+   [w _ w w _]
+   [w _ w w _]
+   [w _ _ _ _]
+   [w e w w w]])
+
+(def solved-maze-lopped
+  [[t t _ _ _]
+   [w t w w _]
+   [w t w w _]
+   [w t _ _ _]
+   [w t w w w]])
