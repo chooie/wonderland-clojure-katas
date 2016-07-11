@@ -31,20 +31,20 @@
         occurred-column-index (get-index-of-elem occurred-row elem)]
     {:row-index occurred-row-index :column-index occurred-column-index}))
 
-(defn is-first-row?
+#_(defn is-first-row?
   [maze row-index]
   (= 0 row-index))
 
-(defn is-last-row?
+#_(defn is-last-row?
   [maze row-index]
   (let [number-of-rows (m-s/get-number-of-rows maze)]
     (= number-of-rows (inc row-index))))
 
-(defn is-first-column?
+#_(defn is-first-column?
   [maze column-index]
   (= 0 column-index))
 
-(defn is-last-column?
+#_(defn is-last-column?
   [maze column-index]
   (let [number-of-columns (m-s/get-number-of-columns-for-maze maze)]
     (= number-of-columns (inc column-index))))

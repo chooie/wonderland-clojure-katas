@@ -24,5 +24,8 @@
            (start-maze-traversal correct-maze))))
   (testing "Checks maze has been started"
     (is (false? (maze-has-been-started? correct-maze)))
-    (is (true? (maze-has-been-started? next-maze)))))
+    (is (true? (maze-has-been-started? next-maze))))
+  (testing "Advance maze"
+    ;; TODO
+    ))
 
