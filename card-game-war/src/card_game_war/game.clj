@@ -1,12 +1,16 @@
 (ns card-game-war.game)
 
-;; feel free to use these cards or use your own data structure
-(def suits [:spade :club :diamond :heart])
-(def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
-(def cards
-  (for [suit suits
-        rank ranks]
-    [suit rank]))
+(defn get-card-suit
+  [{:keys [suit]}]
+  suit)
+
+(defn get-card-rank
+  [{:keys [rank]}]
+  rank)
+
+(defn shuffle-deck
+  [deck]
+  (shuffle deck))
 
 (defn play-round [player1-card player2-card])
 
