@@ -1,13 +1,5 @@
 (ns card-game-war.game)
 
-(defn get-card-suit
-  [{:keys [suit]}]
-  suit)
-
-(defn get-card-rank
-  [{:keys [rank]}]
-  rank)
-
 (defn shuffle-deck
   [deck]
   (shuffle deck))

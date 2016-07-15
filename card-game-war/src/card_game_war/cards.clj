@@ -4,6 +4,22 @@
 
 (def suits-by-ascending-rank [:spade :club :diamond :heart])
 (def ranks [2 3 4 5 6 7 8 9 10 :jack :queen :king :ace])
+
+(defn get-index-of-suit
+  [suit]
+  (let [index (.indexOf suits-by-ascending-rank suit)]
+    (if (< index 0)
+      (throw (Exception. "Suit doesn't exist"))
+      index)))
+
+(defn get-index-of-rank
+  [rank]
+  (let [index (.indexOf ranks rank)]
+    index
+    (if (< index 0)
+      (throw (Exception. "Rank doesn't exist"))
+      index)))
+
 (def cards
   (into [] (for [suit suits-by-ascending-rank
                  rank ranks]
@@ -11,18 +27,13 @@
 
 (def number-of-cards-in-a-suit 13)
 
-;; Operations on model
-
 (defn- get-index-of-beginning-of-suit
   [suit]
-  (let [suit-rank-index (.indexOf suits-by-ascending-rank suit)
+  (let [suit-rank-index (get-index-of-suit suit)
         beginning-of-suit-in-cards (* suit-rank-index
                                       number-of-cards-in-a-suit)]
     beginning-of-suit-in-cards))
 
-(defn- get-index-of-rank
-  [rank]
-  (.indexOf ranks rank))
 
 (defn- get-index-of-card
   [suit rank]
