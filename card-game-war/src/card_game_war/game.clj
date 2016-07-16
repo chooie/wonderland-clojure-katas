@@ -68,13 +68,25 @@
                                        player-hands)]
     (= (count hands-with-cards-left) 1)))
 
+(defn get-winning-player-index
+  [player-decks]
+  {:pre [(one-player-remaining? player-decks)]}
+  (let [not-empty? (complement empty?)
+        non-empty-deck (first (filter not-empty? player-decks))]
+    (.indexOf player-decks non-empty-deck)))
+
 (defn play-hands-recursive
-  []
-  (loop [states []
-           result-message ""]))
+  [player-decks]
+  (loop [states [player-decks]]
+    (let [latest-deck (last states)]
+      (if (one-player-remaining? latest-deck)
+        (let [winning-player-index (get-winning-player-index latest-deck)]
+          [states (str "Player " (inc winning-player-index) " Wins")])
+        (let [new-player-decks (play-round latest-deck)]
+          (recur (conj states new-player-decks)))))))
 
 (defn play-game
   [number-of-players]
   (let [shuffled-deck (shuffle cards/cards)
-        player-decks (deal/deal-cards shuffled-deck number-of-players)]
-    player-decks))
+        starting-player-decks (deal/deal-cards shuffled-deck number-of-players)]
+    (play-hands-recursive starting-player-decks)))

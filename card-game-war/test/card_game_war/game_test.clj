@@ -17,9 +17,18 @@
                               two-of-spades]))))
   (testing "Winner has other players' cards placed at the bottom of his deck"
     (is (= [[ace-of-spades two-of-spades] []]
-           (play-round [[ace-of-spades] [two-of-spades]])))))
+           (play-round [[ace-of-spades] [two-of-spades]])))
+    (is (= [[] [ace-of-spades two-of-hearts two-of-spades] []]
+           (play-round [[two-of-hearts] [ace-of-spades] [two-of-spades]])))))
 
 (deftest test-play-game
   (testing "Win when one player remaining"
-    (is (true? (one-player-remaining? [[] [{:suit :spade :rank :ace}] []]))))
-  (testing "the player loses when they run out of cards"))
+    (is (true? (one-player-remaining? [[ace-of-spades] []])))
+    (is (true? (one-player-remaining? [[] [ace-of-spades] []]))))
+  (testing "The player loses when they run out of cards"
+    (let [[_ game-message] (play-hands-recursive [[ace-of-spades] []])]
+      (is (= "Player 1 Wins" game-message)))
+    (let [[_ game-message] (play-hands-recursive [[two-of-hearts]
+                                                  [ace-of-spades]
+                                                  [two-of-spades]])]
+      (is (= "Player 2 Wins" game-message)))))
