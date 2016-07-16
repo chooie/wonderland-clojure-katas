@@ -15,9 +15,11 @@
     (is (= ace-of-hearts
            (get-winning-card [ace-of-spades ace-of-hearts two-of-hearts
                               two-of-spades]))))
-  #_(testing "Winner has other players' cards placed at the bottom of his deck"
-    (is (= [[] [two-of-spades ace-of-spades]]
+  (testing "Winner has other players' cards placed at the bottom of his deck"
+    (is (= [[ace-of-spades two-of-spades] []]
            (play-round [[ace-of-spades] [two-of-spades]])))))
 
 (deftest test-play-game
+  (testing "Win when one player remaining"
+    (is (true? (one-player-remaining? [[] [{:suit :spade :rank :ace}] []]))))
   (testing "the player loses when they run out of cards"))

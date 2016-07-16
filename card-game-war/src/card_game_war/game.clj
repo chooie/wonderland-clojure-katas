@@ -1,5 +1,7 @@
 (ns card-game-war.game
-  (:require [card-game-war.card-query :as c-q]))
+  (:require [card-game-war.card-query :as c-q]
+            [card-game-war.cards :as cards]
+            [card-game-war.deal :as deal]))
 
 (defn shuffle-deck
   [deck]
@@ -35,9 +37,44 @@
         winning-card (get cards index-of-winner)]
     winning-card))
 
+(defn put-cards-at-bottom-of-players-deck
+  [deck cards]
+  (conj deck cards))
+
 (defn play-round
   [player-hands]
-  (let [cards (mapv first player-hands)]
-    cards))
+  (let [cards (mapv first player-hands)
+        winning-card (get-winning-card cards)
+        winning-card-index (.indexOf cards winning-card)
+        winning-player-index winning-card-index
+        cards-less-winning-card (remove-card-from-cards cards winning-card)
+        cards-to-place-at-bottom-of-deck (into []
+                                               (cons winning-card
+                                                     cards-less-winning-card))
+        player-hands-less-hand (mapv (fn [hand]
+                                       (into [] (rest hand)))
+                                     player-hands)
+        winning-player-deck (get player-hands-less-hand winning-player-index)
+        new-winning-player-deck (vec (concat winning-player-deck
+                                             cards-to-place-at-bottom-of-deck))
+        new-player-decks (assoc player-hands-less-hand
+                                winning-player-index
+                                new-winning-player-deck)]
+    new-player-decks))
 
-(defn play-game [player1-cards player2-cards])
+(defn one-player-remaining?
+  [player-hands]
+  (let [hands-with-cards-left (filterv (fn [hand] (> (count hand) 0))
+                                       player-hands)]
+    (= (count hands-with-cards-left) 1)))
+
+(defn play-hands-recursive
+  []
+  (loop [states []
+           result-message ""]))
+
+(defn play-game
+  [number-of-players]
+  (let [shuffled-deck (shuffle cards/cards)
+        player-decks (deal/deal-cards shuffled-deck number-of-players)]
+    player-decks))
