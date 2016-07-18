@@ -14,12 +14,16 @@
   (testing "Gets winning card from cards"
     (is (= ace-of-hearts
            (get-winning-card [ace-of-spades ace-of-hearts two-of-hearts
-                              two-of-spades]))))
+                              two-of-spades]))
+        (= ace-of-hearts
+           (get-winning-card [nil ace-of-hearts two-of-hearts]))))
   (testing "Winner has other players' cards placed at the bottom of his deck"
     (is (= [[ace-of-spades two-of-spades] []]
            (play-round [[ace-of-spades] [two-of-spades]])))
     (is (= [[] [ace-of-spades two-of-hearts two-of-spades] []]
-           (play-round [[two-of-hearts] [ace-of-spades] [two-of-spades]])))))
+           (play-round [[two-of-hearts] [ace-of-spades] [two-of-spades]])))
+    (is (= [[] [ace-of-spades two-of-hearts] []]
+           (play-round [[] [ace-of-spades] [two-of-hearts]])))))
 
 (deftest test-play-game
   (testing "Win when one player remaining"
@@ -31,4 +35,8 @@
     (let [[_ game-message] (play-hands-recursive [[two-of-hearts]
                                                   [ace-of-spades]
                                                   [two-of-spades]])]
-      (is (= "Player 2 Wins" game-message)))))
+      (is (= "Player 2 Wins" game-message)))
+    (let [[_ game-message] (play-hands-recursive [[ace-of-spades]
+                                                  []
+                                                  [two-of-spades]])]
+      (is (= "Player 1 Wins" game-message)))))

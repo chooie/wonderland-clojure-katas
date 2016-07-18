@@ -9,10 +9,12 @@
 
 (defn card-beats-all-cards?
   [cards card-to-check]
+  {:pre [(not (nil? card-to-check))]}
   (let [card-loses? (complement c-q/card-wins?)
+        cards-less-nils (filter (complement nil?) cards)
         cards-that-beat-card (filter (fn [card]
                                        (card-loses? card-to-check card))
-                                     cards)]
+                                     cards-less-nils)]
     (= 0 (count cards-that-beat-card))))
 
 (defn card-in-cards?
@@ -29,9 +31,11 @@
 (defn get-winning-card
   [cards]
   (let [results (mapv (fn [card]
-                        (let [cards-less-card (remove-card-from-cards cards
-                                                                      card)]
-                          (card-beats-all-cards? cards-less-card card)))
+                        (if (nil? card)
+                            false
+                            (let [cards-less-card (remove-card-from-cards cards
+                                                                          card)]
+                              (card-beats-all-cards? cards-less-card card))))
                       cards)
         index-of-winner (.indexOf results true)
         winning-card (get cards index-of-winner)]
@@ -41,6 +45,15 @@
   [deck cards]
   (conj deck cards))
 
+(defn- get-cards-to-place-in-deck
+  [winning-card cards-less-winning-card]
+  (let [cards-to-place-in-deck (into []
+                                     (cons winning-card
+                                           cards-less-winning-card))
+        cards-to-place-in-deck-less-nils (filter (complement nil?)
+                                                 cards-to-place-in-deck)]
+    cards-to-place-in-deck-less-nils))
+
 (defn play-round
   [player-hands]
   (let [cards (mapv first player-hands)
@@ -48,9 +61,8 @@
         winning-card-index (.indexOf cards winning-card)
         winning-player-index winning-card-index
         cards-less-winning-card (remove-card-from-cards cards winning-card)
-        cards-to-place-at-bottom-of-deck (into []
-                                               (cons winning-card
-                                                     cards-less-winning-card))
+        cards-to-place-at-bottom-of-deck (get-cards-to-place-in-deck
+                                          winning-card cards-less-winning-card)
         player-hands-less-hand (mapv (fn [hand]
                                        (into [] (rest hand)))
                                      player-hands)

@@ -31,7 +31,9 @@
 
 (defn card-wins?
   [card-to-check other-card]
-  {:pre [(not= card-to-check other-card)]}
+  {:pre [(not= card-to-check other-card)
+         (not (nil? card-to-check))
+         (not (nil? other-card))]}
   (if (rank-is-greater? card-to-check other-card)
     true
     (if (ranks-are-equal? card-to-check other-card)
